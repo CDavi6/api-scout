@@ -15,7 +15,7 @@ import {
 
 interface darkmodetoggleProps {}
 
-const darkmodetoggle: FC<darkmodetoggleProps> = ({}) => {
+const Darkmodetoggle: FC<darkmodetoggleProps> = ({}) => {
   const { setTheme } = useTheme();
 
   return (
@@ -42,4 +42,4 @@ const darkmodetoggle: FC<darkmodetoggleProps> = ({}) => {
   );
 };
 
-export default darkmodetoggle;
+export default Darkmodetoggle;

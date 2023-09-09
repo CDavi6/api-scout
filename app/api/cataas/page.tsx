@@ -8,9 +8,9 @@ import Navbar from "@/mycomponents/Navbar";
 
 import { Button } from "@/components/ui/button";
 
-interface pageProps {}
+interface PageProps {}
 
-const page: FC<pageProps> = ({}) => {
+const Page: FC<PageProps> = ({}) => {
   const [cat, setCat] = useState("");
 
   async function getCatImage() {
@@ -43,4 +43,4 @@ const page: FC<pageProps> = ({}) => {
   );
 };
 
-export default page;
+export default Page;

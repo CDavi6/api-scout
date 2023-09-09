@@ -2,7 +2,7 @@ import React from "react";
 
 import Navbar from "@/mycomponents/Navbar";
 
-export default function page() {
+export default function Page() {
   return (
     <>
       <Navbar />

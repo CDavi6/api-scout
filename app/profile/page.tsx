@@ -1,15 +1,15 @@
 import { FC } from 'react'
 import Navbar from "@/mycomponents/Navbar";
 
-interface pageProps {
+interface PageProps {
   
 }
 
-const page: FC<pageProps> = ({}) => {
+const Page: FC<PageProps> = ({}) => {
   return <>
     <Navbar />
     Profile
   </>
 }
 
-export default page
+export default Page
