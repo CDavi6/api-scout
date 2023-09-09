@@ -25,7 +25,7 @@ interface NavbarProps {}
 const apiList: { name: string; href: string; description: string }[] = [
   {
     name: "Rick and Morty",
-    href: "/rickandmorty",
+    href: "/api/rickandmorty",
     description: "Rick and Morty Characters, Locations and Episodes.",
   },
   {
