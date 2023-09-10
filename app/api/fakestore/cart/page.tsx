@@ -1,11 +1,11 @@
 import { FC } from 'react'
 
-interface pageProps {
+interface PageProps {
   
 }
 
-const page: FC<pageProps> = ({}) => {
+const Page: FC<PageProps> = ({}) => {
   return <div>Cart</div>
 }
 
-export default page
+export default Page

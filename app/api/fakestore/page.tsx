@@ -22,9 +22,9 @@ type Item = {
   };
 };
 
-interface pageProps {}
+interface PageProps {}
 
-const page: FC<pageProps> = ({}) => {
+const Page: FC<PageProps> = ({}) => {
   const [data, setData] = useState<Item[]>([]);
   const [amounts, setAmounts] = useState<number[]>([]);
 
@@ -124,4 +124,4 @@ const page: FC<pageProps> = ({}) => {
   );
 };
 
-export default page;
+export default Page;
