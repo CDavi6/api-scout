@@ -30,7 +30,7 @@ const apiList: { name: string; href: string; description: string }[] = [
   },
   {
     name: "Fake Store",
-    href: "/fakestore",
+    href: "/api/fakestore",
     description: "Fake ecommerce store.",
   },
   {
@@ -40,7 +40,7 @@ const apiList: { name: string; href: string; description: string }[] = [
   },
   {
     name: "Dad Jokes",
-    href: "/dadjokes",
+    href: "/api/dadjokes",
     description: "Some classic dad jokes.",
   },
 ];
@@ -48,9 +48,9 @@ const apiList: { name: string; href: string; description: string }[] = [
 const Navbar: FC<NavbarProps> = ({}) => {
   return (
     <>
-      <nav className="flex justify-between w-full">
-        <div className="flex flex-row space-x-8">
-          <div className="w-24 h-24 text-center mt-4 ml-4">
+      <nav className="flex justify-between w-full sticky top-0 bg-white dark:bg-neutral-900 drop-shadow-xl">
+        <div className="flex flex-row lg:space-x-2 md:space-x-4 sm:space-x-8">
+          <div className="w-12 h-12 sm:w-24 sm:h-24 text-center m-1 sm:m-4">
             <Image
               src="https://placehold.co/64x64"
               width={100}
@@ -103,7 +103,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
             </NavigationMenu>
           </div>
         </div>
-        <div className="flex flex-row justify-center self-center mr-8">
+        <div className="flex flex-row justify-center self-center mr-1 sm:mr-8">
           <Darkmodetoggle />
         </div>
       </nav>

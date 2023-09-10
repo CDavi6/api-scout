@@ -144,7 +144,7 @@ const Page: FC<PageProps> = ({}) => {
         THIS IS A WORK IN PROGRESS. SOME INFO/FEATURES MAY BE BROKEN AND/OR
         INCORRECT
       </h1>
-      <div className="flex justify-center mb-4 shadow-lg h-20 relative space-x-2">
+      <div className="flex justify-center mb-4 shadow-lg h-20 space-x-2">
         <button onClick={getCharacters} className="hover:text-blue-600">
           Characters
         </button>

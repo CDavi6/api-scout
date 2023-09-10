@@ -135,7 +135,7 @@ const Character: FC<CharacterProps> = (props) => {
         onMouseLeave={() => {
           setIsHovering(false);
         }}
-        className="bg-gray-100 dark:bg-neutral-800 shadow-lg p-8 rounded-lg w-[364px] transition-all transition-slowest ease md:hover:w-[800px] sm:hover:w-[400px] flex flex-row h-[648px]"
+        className="bg-gray-100 dark:bg-neutral-800 shadow-lg p-8 rounded-lg w-[364px] transition-all transition-slowest ease md:hover:w-[740px] sm:hover:w-[400px] flex flex-row h-[648px]"
       >
         {isHovering ? (
           <>
