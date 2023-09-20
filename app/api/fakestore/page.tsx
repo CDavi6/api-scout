@@ -7,6 +7,8 @@ import { StarIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import Navbar from "@/mycomponents/Navbar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 // Define the type for the item
 type Item = {
@@ -28,6 +30,8 @@ const Page: FC<PageProps> = ({}) => {
   const [data, setData] = useState<Item[]>([]);
   const [amounts, setAmounts] = useState<number[]>([]);
 
+  const { toast } = useToast();
+
   useEffect(() => {
     getStoreItems();
   }, []);
@@ -45,6 +49,21 @@ const Page: FC<PageProps> = ({}) => {
     setAmounts(new Array(result.length).fill(1));
   }
 
+  const addToCart = (item: string, amount: number, index: number) => {
+    toast({
+      title: "Added to cart!",
+      description: `Successfully added ${amount} ${item} to cart.`,
+      action: (
+        <ToastAction altText="View Cart">
+          {" "}
+          <Link href={"/api/fakestore/cart"}>Go to cart</Link>
+        </ToastAction>
+      ),
+    });
+
+    updateAmount(index, 1);
+  };
+
   const updateAmount = (index: number, newAmount: number) => {
     const newAmounts = [...amounts];
     newAmounts[index] = newAmount;
@@ -56,53 +75,51 @@ const Page: FC<PageProps> = ({}) => {
   return (
     <>
       <Navbar />
-      <Link href={"/api/fakestore/cart"}>Go to cart</Link>
       {data.map((items, index) => (
-        <div key={index}>
-          <div className="bg-gray-100 dark:bg-neutral-800 w-64 m-4 rounded-2xl flex flex-col items-center text-center">
+        <div key={index} className="flex">
+          <div className="bg-gray-100 dark:bg-neutral-800 m-4 rounded-2xl flex flex-col items-center text-center w-48 h-96 justify-center align-middle">
             <img
               src={items.image}
-              width={200}
-              height={200}
+              width={128}
+              height={128}
               alt="Image of product"
-              className="p-4"
+              className="p-4 mix-blend-multiply"
             />
-            <h1 className="text-black dark:text-white text-lg font-bold p-4">
+            <h1 className="text-black dark:text-white font-bold p-2 text-sm">
               {items.title}
             </h1>
             <div>
               {/* <li className="text-black">{items.description}</li> */}
 
-              <p className="text-gray-900 dark:text-gray-400 pb-4">
+              <p className="text-gray-900 dark:text-gray-400 pb-4 text-8">
                 {items.category.charAt(0).toUpperCase() +
                   items.category.slice(1)}
               </p>
 
-              <button
-                className="flex flex-row bg-purple-800 items-center w-40 h-12 rounded-xl hover:w-48 hover:h-16 transition-all active:w-44 active:h-14 active:bg-gray-600"
-                onClick={() => updateAmount(index, 1)}
+              <Button
+                className="flex flex-row w-36 h-8 rounded-xl hover:bg-gray-700 active:bg-gray-600"
+                onClick={() => {
+                  addToCart(items.title, amounts[index], index);
+                }}
               >
                 <div>
-                  <p className="text-white font-bold pl-6 text-sm">
+                  <p className="text-white font-bold pl-6 text-xs">
                     Add to cart
-                  </p>
-                  <p className="text-white font-bold pl-6 text-sm">
-                    ${items.price}
                   </p>
                 </div>
                 <ChevronRightIcon
-                  width={32}
+                  width={16}
                   className="bg-transparent rounded-lg text-white ml-auto mr-2"
                 />
-              </button>
+              </Button>
             </div>
             <div className="flex flex-row space-x-4 pt-4">
-              <button
+              <Button
                 className=" bg-gray-100  dark:bg-neutral-800 text-neutral-800 dark:text-white font-bold text-2xl w-14 active:bg-gray-200 hover:bg-gray-300 dark:active:bg-neutral-600 dark:hover:bg-neutral-700"
                 onClick={() => updateAmount(index, amounts[index] - 1)}
               >
                 -
-              </button>
+              </Button>
 
               <p className="text-neutral-800 dark:text-white font-bold text-2xl">
                 {amounts[index]}
@@ -115,8 +132,16 @@ const Page: FC<PageProps> = ({}) => {
                 +
               </button>
             </div>
-            <br />
-            <br />
+          </div>
+          <div className="flex flex-col w-full h-96 justify-around bg-gray-100 dark:bg-neutral-800 rounded-2xl m-4">
+            <div className="text-center font-bold text-sm md:text-xl lg:text-2xl">
+              <h1>{items.description}</h1>
+            </div>
+            <div className="flex justify-center items-center">
+              <StarIcon width={48} className="text-yellow-600"/>
+              &nbsp;
+              <p className="font-bold text-xl">{items.rating.rate}</p>
+            </div>
           </div>
         </div>
       ))}

@@ -5,8 +5,10 @@ import Navbar from "@/mycomponents/Navbar";
 export default function Page() {
   return (
     <>
-      <Navbar />
-      Home
+      <div className="flex flex-col">
+        <Navbar />
+        Home
+      </div>
     </>
   );
 }
