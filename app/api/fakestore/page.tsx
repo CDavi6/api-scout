@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart, removeFromCart, clearCart } from "../../../src/redux/reducers/cartStuff/cartActions";
 
 // Define the type for the item
 type Item = {
@@ -27,6 +29,8 @@ type Item = {
 interface PageProps {}
 
 const Page: FC<PageProps> = ({}) => {
+  const dispatch = useDispatch();
+
   const [data, setData] = useState<Item[]>([]);
   const [amounts, setAmounts] = useState<number[]>([]);
 
@@ -49,7 +53,10 @@ const Page: FC<PageProps> = ({}) => {
     setAmounts(new Array(result.length).fill(1));
   }
 
-  const addToCart = (item: string, amount: number, index: number) => {
+  const addCart = (item: string, amount: number, index: number, id: number) => {
+    dispatch(addToCart(id, amount));
+    console.log(id);
+
     toast({
       title: "Added to cart!",
       description: `Successfully added ${amount} ${item} to cart.`,
@@ -75,6 +82,7 @@ const Page: FC<PageProps> = ({}) => {
   return (
     <>
       <Navbar />
+      <Link href="./fakestore/cart">Go to Cart</Link>
       {data.map((items, index) => (
         <div key={index} className="flex">
           <div className="bg-gray-100 dark:bg-neutral-800 m-4 rounded-2xl flex flex-col items-center text-center w-48 h-96 justify-center align-middle">
@@ -99,7 +107,7 @@ const Page: FC<PageProps> = ({}) => {
               <Button
                 className="flex flex-row w-36 h-8 rounded-xl hover:bg-gray-700 active:bg-gray-600"
                 onClick={() => {
-                  addToCart(items.title, amounts[index], index);
+                  addCart(items.title, amounts[index], index, items.id);
                 }}
               >
                 <div>
@@ -138,7 +146,7 @@ const Page: FC<PageProps> = ({}) => {
               <h1>{items.description}</h1>
             </div>
             <div className="flex justify-center items-center">
-              <StarIcon width={48} className="text-yellow-600"/>
+              <StarIcon width={48} className="text-yellow-600" />
               &nbsp;
               <p className="font-bold text-xl">{items.rating.rate}</p>
             </div>
