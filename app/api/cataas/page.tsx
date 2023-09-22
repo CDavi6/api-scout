@@ -38,6 +38,7 @@ const Page: FC<PageProps> = ({}) => {
 
   return (
     <>
+      <title>API Scout - CATAAS</title>
       <Navbar />
       <div className="flex flex-col justify-center items-center space-y-8">
         <h1 className="font-bold text-2xl">Cat As A Service</h1>

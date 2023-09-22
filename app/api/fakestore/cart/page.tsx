@@ -1,11 +1,14 @@
-import { FC } from 'react'
+import { FC } from "react";
 
-interface PageProps {
-  
-}
+interface PageProps {}
 
 const Page: FC<PageProps> = ({}) => {
-  return <div>Cart</div>
-}
+  return (
+    <>
+      <title>API Scout - Cart</title>
+      Cart
+    </>
+  );
+};
 
-export default Page
+export default Page;

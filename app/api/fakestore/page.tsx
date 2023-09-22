@@ -10,7 +10,11 @@ import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCart, removeFromCart, clearCart } from "../../../src/redux/reducers/cartStuff/cartActions";
+import {
+  addToCart,
+  removeFromCart,
+  clearCart,
+} from "../../../src/redux/reducers/cartStuff/cartActions";
 
 // Define the type for the item
 type Item = {
@@ -81,6 +85,7 @@ const Page: FC<PageProps> = ({}) => {
 
   return (
     <>
+      <title>API Scout - Fake Store</title>
       <Navbar />
       <Link href="./fakestore/cart">Go to Cart</Link>
       {data.map((items, index) => (

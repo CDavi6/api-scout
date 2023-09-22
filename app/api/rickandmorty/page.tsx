@@ -139,6 +139,7 @@ const Page: FC<PageProps> = ({}) => {
 
   return (
     <>
+      <title>API Scout - Rick and Morty</title>
       <Navbar />
       <h1 className="font-bold text-2xl text-red-600 text-center">
         THIS IS A WORK IN PROGRESS. SOME INFO/FEATURES MAY BE BROKEN AND/OR
