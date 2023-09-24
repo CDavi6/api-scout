@@ -1,69 +1,69 @@
 // cartReducer.js
 
-import cartInitialState from './cartInitialState';
-import { ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART } from './cartActionTypes';
+import cartInitialState from "./cartInitialState";
+import { ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART } from "./cartActionTypes";
 
 const cartReducer = (state = cartInitialState, action) => {
   switch (action.type) {
     case ADD_TO_CART:
-      // Check if the product is already in the cart
-      const existingCartItemIndex = state.items.findIndex(
+      // Check if the product is already in the cart for ADD_TO_CART
+      const existingCartItemIndexAdd = state.items.findIndex(
         (item) => item.id === action.payload.id
       );
 
-      if (existingCartItemIndex !== -1) {
-        // If the item is already in the cart, update its amount
+      if (existingCartItemIndexAdd !== -1) {
+        // If the item is already in the cart, update its amount for ADD_TO_CART
         const updatedItems = [...state.items];
-        updatedItems[existingCartItemIndex].amount += action.payload.amount;
+        updatedItems[existingCartItemIndexAdd].amount += action.payload.amount;
 
         return {
           ...state,
           items: updatedItems,
-          total: state.total + (action.payload.price * action.payload.amount),
+          total: (state.total += action.payload.amount),
         };
       } else {
-        // If the item is not in the cart, add it with the specified amount
+        // If the item is not in the cart, add it with the specified amount for ADD_TO_CART
         return {
           ...state,
           items: [
             ...state.items,
             { ...action.payload, amount: action.payload.amount }, // Set amount to the added amount
           ],
-          total: state.total + (action.payload.price * action.payload.amount),
+          total: (state.total += action.payload.amount),
         };
       }
 
     case REMOVE_FROM_CART:
-      // Find the item to remove
-      const itemToRemoveIndex = state.items.findIndex(
-        (item) => item.id === action.payload
+      const { id, amount } = action.payload;
+      const existingCartItemIndexRemove = state.items.findIndex(
+        (item) => item.id === id
       );
 
-      if (itemToRemoveIndex !== -1) {
-        const itemToRemove = state.items[itemToRemoveIndex];
+      if (existingCartItemIndexRemove !== -1) {
+        const updatedItems = [...state.items];
+        const existingItem = updatedItems[existingCartItemIndexRemove];
 
-        // If the item is found, decrease its amount or remove it if the amount is 1
-        if (itemToRemove.amount === 1) {
-          return {
-            ...state,
-            items: [
-              ...state.items.slice(0, itemToRemoveIndex),
-              ...state.items.slice(itemToRemoveIndex + 1),
-            ],
-            total: state.total - (itemToRemove.price * itemToRemove.amount),
-          };
-        } else {
-          const updatedItems = [...state.items];
-          updatedItems[itemToRemoveIndex].amount -= 1;
+        if (existingItem.amount >= amount) {
+          // If the item quantity in the cart is greater than or equal to the specified amount, reduce the quantity
+          existingItem.amount -= amount;
 
-          return {
-            ...state,
-            items: updatedItems,
-            total: state.total - itemToRemove.price,
-          };
+          // If the amount becomes zero, remove the item from updatedItems
+          if (existingItem.amount === 0) {
+            updatedItems.splice(existingCartItemIndexRemove, 1);
+          }
         }
+
+        const updatedTotal = state.total - amount;
+
+        return {
+          ...state,
+          items: updatedItems,
+          total: updatedTotal,
+        };
+      } else {
+        // If the item is not in the cart, return the current state for REMOVE_FROM_CART
+        return state;
       }
-      return state;
 
     case CLEAR_CART:
       // Reset the cart to its initial state

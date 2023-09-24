@@ -90,7 +90,7 @@ const Page: FC<PageProps> = ({}) => {
       <Link href="./fakestore/cart">Go to Cart</Link>
       {data.map((items, index) => (
         <div key={index} className="flex">
-          <div className="bg-gray-100 dark:bg-neutral-800 m-4 rounded-2xl flex flex-col items-center text-center w-48 h-96 justify-center align-middle">
+          <div className="bg-gray-100 dark:bg-neutral-800 m-4 rounded-2xl flex flex-col items-center text-center w-48 align-middle justify-evenly">
             <img
               src={items.image}
               width={128}
