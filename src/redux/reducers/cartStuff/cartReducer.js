@@ -20,6 +20,7 @@ const cartReducer = (state = cartInitialState, action) => {
           ...state,
           items: updatedItems,
           total: (state.total += action.payload.amount),
+          price: (state.price += action.payload.price),
         };
       } else {
         // If the item is not in the cart, add it with the specified amount for ADD_TO_CART
@@ -30,6 +31,7 @@ const cartReducer = (state = cartInitialState, action) => {
             { ...action.payload, amount: action.payload.amount }, // Set amount to the added amount
           ],
           total: (state.total += action.payload.amount),
+          price: (state.price += action.payload.price),
         };
       }
 
@@ -49,11 +51,13 @@ const cartReducer = (state = cartInitialState, action) => {
         }
 
         const updatedTotal = state.total - amount;
+        const updatedPrice = state.price - price;
 
         return {
           ...state,
           items: updatedItems,
           total: updatedTotal,
+          price: updatedPrice,
         };
       } else {
         // If the item is not in the cart, return the current state for REMOVE_FROM_CART
@@ -66,7 +70,8 @@ const cartReducer = (state = cartInitialState, action) => {
         ...state,
         items: [],
         total: 0,
-      }
+        price: 0,
+      };
 
     default:
       return state;

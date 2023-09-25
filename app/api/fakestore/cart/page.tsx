@@ -11,6 +11,7 @@ import {
   clearCart,
 } from "../../../../src/redux/reducers/cartStuff/cartActions";
 import Image from "next/image";
+import { Trash2Icon } from "lucide-react";
 
 interface PageProps {}
 
@@ -31,11 +32,16 @@ type Item = {
 interface RootState {
   cart: {
     items: Item[];
+    total: number;
+    price: number;
   };
 }
 
 const Page: FC<PageProps> = ({}) => {
   const dispatch = useDispatch();
+
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const subtotal = useSelector((state: RootState) => state.cart.price);
 
   const [data, setData] = useState<Item[]>([]);
 
@@ -58,7 +64,22 @@ const Page: FC<PageProps> = ({}) => {
     setData(result);
   }
 
-  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const calculateDiscount = (price: number): number => {
+    const discountPercentage = 20; // 20% discount
+    return (price / 100) * discountPercentage;
+  };
+
+  const calculateTax = (price: number): number => {
+    const taxRate = 10; // 10% tax rate
+    return (price * taxRate) / 100;
+  };
+
+  const calculateTotal = (price: number): number => {
+    const discount = calculateDiscount(price);
+    const tax = calculateTax(price);
+    const total = price - discount + tax;
+    return total;
+  };
 
   const clear = () => {
     dispatch(clearCart());
@@ -76,29 +97,47 @@ const Page: FC<PageProps> = ({}) => {
       if (dataIds.has(cartItems[i].id)) {
         if (cartItems[i].amount > 0) {
           matchingElements.push(
-            <div className="flex flex-col bg-white dark:bg-neutral-800 w-full">
-              <div className="flex flex-row my-2">
-                {/* Image Div */}
-                <div className="bg-neutral-100 dark:bg-neutral-700 w-20 h-20 rounded-sm flex justify-center border-2">
-                  <img
-                    src={data[i].image}
-                    alt=""
-                    className="p-1 aspect-square rounded-lg mix-blend-multiply"
-                  />
-                </div>
+            <div className="flex flex-row my-2">
+              {/* Image */}
+              <div className="bg-neutral-100 dark:bg-neutral-700 w-20 h-20 rounded-sm flex justify-center border-2">
+                <img
+                  src={data[i].image}
+                  alt=""
+                  className="p-1 aspect-square rounded-lg mix-blend-multiply"
+                />
+              </div>
 
-                {/* Title and category */}
-                <div className="pl-2 flex flex-col justify-center space-y-2">
-                  <div className="font-bold text-xs">
-                    <h1>{data[i].title}</h1>
-                  </div>
-                  <div className="text-neutral-400 text-xs">
-                    <p>{data[i].category}</p>
-                  </div>
+              {/* Title and category */}
+              <div className="pl-2 flex flex-col flex-grow justify-center space-y-2">
+                <div className="font-bold text-xs">
+                  <h1>{data[i].title}</h1>
                 </div>
+                <div className="text-neutral-400 text-xs">
+                  <p>{data[i].category}</p>
+                </div>
+              </div>
 
-                {/* Counter */}
-                
+              {/* Counter */}
+              <div className="flex items-center">
+                <div className="border-2 flex items-center w-32 justify-evenly rounded-lg h-10">
+                  <Button className="bg-white h-8 text-neutral-600 hover:bg-neutral-200 active:bg-neutral-400">
+                    -
+                  </Button>
+                  <p className="px-2">{cartItems[i].amount}</p>
+                  <Button className="bg-white h-8 text-neutral-600 hover:bg-neutral-200 active:bg-neutral-400">
+                    +
+                  </Button>
+                </div>
+              </div>
+
+              {/* Price */}
+              <div className="flex justify-center items-center ml-4 w-20">
+                <h1 className="font-bold">${data[i].price}</h1>
+              </div>
+
+              {/* Remove from cart */}
+              <div className="flex items-center ml-4">
+                <Trash2Icon className="text-neutral-700" />
               </div>
             </div>
           );
@@ -115,6 +154,10 @@ const Page: FC<PageProps> = ({}) => {
     return matchingElements;
   };
 
+  const discount = calculateDiscount(subtotal);
+  const tax = calculateTax(discount);
+  const total = calculateTotal(tax);
+
   return (
     <>
       <title>API Scout - Cart</title>
@@ -130,7 +173,67 @@ const Page: FC<PageProps> = ({}) => {
       <br />
       <br />
       <div className="center w-[350px] md:w-[700px] lg:w-[900px]">
+        <hr />
+        <hr />
         {showCart()}
+        <hr />
+        <hr />
+        <br />
+
+        {/* Promocode */}
+        <div className="py-2 space-y-2">
+          <div className="flex flex-row space-x-1 border-2 p-1 rounded-lg">
+            <input
+              type="text"
+              placeholder="Promocode"
+              className="w-full outline-none rounded-lg"
+            />
+            <Button className="active:bg-neutral-600">Apply</Button>
+          </div>
+          <p className="text-neutral-400">20% off discount</p>
+        </div>
+
+        <hr />
+        <hr />
+        <br />
+        <br />
+
+        {/* Final price */}
+        <div className="flex flex-col">
+          <div className="flex flex-row justify-between">
+            <h1>Subtotal</h1>
+            <p>${subtotal}</p>
+          </div>
+          <div className="flex flex-row justify-between text-neutral-400">
+            <h1>Discount</h1>
+            <p>(20%) - ${discount}</p>
+          </div>
+          <div className="flex flex-row justify-between text-neutral-400">
+            <h1>Tax</h1>
+            <p>+ ${tax}</p>
+          </div>
+          <br />
+          <hr />
+          <br />
+          <div className="flex flex-row justify-between">
+            <h1>Total</h1>
+            <p className="font-bold">
+              ${total}
+            </p>
+          </div>
+        </div>
+
+        <br />
+
+        {/* Checkout or continue shopping */}
+        <div className="flex flex-col space-y-2">
+          <Button className="bg-blue-600 hover:bg-blue-500 active:bg-neutral-600">
+            Proceed to Checkout
+          </Button>
+          <Button className="bg-white hover:bg-neutral-300 active:bg-neutral-600 active:text-white text-black border-2">
+            Continue Shopping
+          </Button>
+        </div>
       </div>
     </>
   );

@@ -57,8 +57,14 @@ const Page: FC<PageProps> = ({}) => {
     setAmounts(new Array(result.length).fill(1));
   }
 
-  const addCart = (item: string, amount: number, index: number, id: number) => {
-    dispatch(addToCart(id, amount));
+  const addCart = (
+    item: string,
+    amount: number,
+    price: number,
+    index: number,
+    id: number
+  ) => {
+    dispatch(addToCart(id, amount, price));
     console.log(id);
 
     toast({
@@ -112,7 +118,7 @@ const Page: FC<PageProps> = ({}) => {
               <Button
                 className="flex flex-row w-36 h-8 rounded-xl hover:bg-gray-700 active:bg-gray-600"
                 onClick={() => {
-                  addCart(items.title, amounts[index], index, items.id);
+                  addCart(items.title, amounts[index], items.price, index, items.id);
                 }}
               >
                 <div>
