@@ -10,6 +10,7 @@ import {
   removeFromCart,
   clearCart,
 } from "../../../../src/redux/reducers/cartStuff/cartActions";
+import Image from "next/image";
 
 interface PageProps {}
 
@@ -24,15 +25,12 @@ type Item = {
     rate: number;
     count: number;
   };
+  amount: number;
 };
 
 interface RootState {
   cart: {
-    items: {
-      [x: string]: number;
-      id: number;
-      amount: number;
-    };
+    items: Item[];
   };
 }
 
@@ -78,47 +76,29 @@ const Page: FC<PageProps> = ({}) => {
       if (dataIds.has(cartItems[i].id)) {
         if (cartItems[i].amount > 0) {
           matchingElements.push(
-            <div>
-              <div className="bg-gray-100 dark:bg-neutral-800 m-4 rounded-2xl flex flex-col items-center text-center w-48 h-96 justify-center align-middle">
-                <img
-                  src={data[i].image}
-                  width={128}
-                  height={128}
-                  alt="Image of product"
-                  className="p-4 mix-blend-multiply"
-                />
-                <h1 className="text-black dark:text-white font-bold p-2 text-sm">
-                  {data[i].title}
-                </h1>
-                <div>
-                  <p className="text-gray-900 dark:text-gray-400 pb-4 text-8">
-                    {data[i].category.charAt(0).toUpperCase() +
-                      data[i].category.slice(1)}
-                  </p>
+            <div className="flex flex-col bg-white dark:bg-neutral-800 w-full">
+              <div className="flex flex-row my-2">
+                {/* Image Div */}
+                <div className="bg-neutral-100 dark:bg-neutral-700 w-20 h-20 rounded-sm flex justify-center border-2">
+                  <img
+                    src={data[i].image}
+                    alt=""
+                    className="p-1 aspect-square rounded-lg mix-blend-multiply"
+                  />
                 </div>
-                <div>
-                  <p className="text-black dark:text-white font-bold p-2 text-sm">
-                    {cartItems[i].amount}
-                  </p>
+
+                {/* Title and category */}
+                <div className="pl-2 flex flex-col justify-center space-y-2">
+                  <div className="font-bold text-xs">
+                    <h1>{data[i].title}</h1>
+                  </div>
+                  <div className="text-neutral-400 text-xs">
+                    <p>{data[i].category}</p>
+                  </div>
                 </div>
-                <div className="flex flex-row justify-around space-x-4">
-                  <Button
-                    className="bg-red-500 hover:bg-red-400 active:bg-neutral-600 w-20"
-                    onClick={() => {
-                      remove(cartItems[i].id, 1);
-                    }}
-                  >
-                    Remove 1
-                  </Button>
-                  <Button
-                    className="bg-red-500 hover:bg-red-400 active:bg-neutral-600 w-20"
-                    onClick={() => {
-                      remove(cartItems[i].id, cartItems[i].amount);
-                    }}
-                  >
-                    Remove All
-                  </Button>
-                </div>
+
+                {/* Counter */}
+                
               </div>
             </div>
           );
@@ -149,7 +129,9 @@ const Page: FC<PageProps> = ({}) => {
       </Button>
       <br />
       <br />
-      {showCart()}
+      <div className="center w-[350px] md:w-[700px] lg:w-[900px]">
+        {showCart()}
+      </div>
     </>
   );
 };

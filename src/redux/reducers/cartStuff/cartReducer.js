@@ -46,11 +46,6 @@ const cartReducer = (state = cartInitialState, action) => {
         if (existingItem.amount >= amount) {
           // If the item quantity in the cart is greater than or equal to the specified amount, reduce the quantity
           existingItem.amount -= amount;
-
-          // If the amount becomes zero, remove the item from updatedItems
-          if (existingItem.amount === 0) {
-            updatedItems.splice(existingCartItemIndexRemove, 1);
-          }
         }
 
         const updatedTotal = state.total - amount;
@@ -67,7 +62,11 @@ const cartReducer = (state = cartInitialState, action) => {
 
     case CLEAR_CART:
       // Reset the cart to its initial state
-      return cartInitialState;
+      return {
+        ...state,
+        items: [],
+        total: 0,
+      }
 
     default:
       return state;
