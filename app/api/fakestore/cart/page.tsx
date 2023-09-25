@@ -64,30 +64,47 @@ const Page: FC<PageProps> = ({}) => {
     setData(result);
   }
 
-  const calculateDiscount = (price: number): number => {
+  //#region calculate prices
+
+  const calculateDiscount = (subtotal: number) => {
     const discountPercentage = 20; // 20% discount
-    return (price / 100) * discountPercentage;
+    const discountedAmount = (subtotal * discountPercentage) / 100;
+    return parseFloat(discountedAmount.toFixed(2));
   };
 
-  const calculateTax = (price: number): number => {
-    const taxRate = 10; // 10% tax rate
-    return (price * taxRate) / 100;
+  const calculateTax = (subtotal: number) => {
+    const taxPercentage = 4; // 4% tax
+    const taxableAmount = subtotal - calculateDiscount(subtotal);
+    const taxAmount = (taxableAmount * taxPercentage) / 100;
+    // return parseFloat(taxAmount.toFixed(2));
+    return taxAmount;
   };
 
-  const calculateTotal = (price: number): number => {
-    const discount = calculateDiscount(price);
-    const tax = calculateTax(price);
-    const total = price - discount + tax;
+  const calculateTotal = (subtotal: number) => {
+    const discountAmount = calculateDiscount(subtotal);
+    const taxAmount = calculateTax(subtotal);
+    const total = subtotal - discountAmount + taxAmount;
+    // return parseFloat(total.toFixed(2));
     return total;
+  };
+
+  //#endregion
+
+  //#region add, remove and clear cart
+
+  const addCart = (id: number, amount: number, price: number) => {
+    dispatch(addToCart(id, amount, price));
+  };
+
+  const removeCart = (id: number, amount: number, price: number) => {
+    dispatch(removeFromCart(id, amount));
   };
 
   const clear = () => {
     dispatch(clearCart());
   };
 
-  const remove = (id: number, amount: number) => {
-    dispatch(removeFromCart(id, amount));
-  };
+  //#endregion
 
   const showCart = () => {
     const dataIds = new Set(data.map((item) => item.id)); // Create a Set of data ids
@@ -120,11 +137,23 @@ const Page: FC<PageProps> = ({}) => {
               {/* Counter */}
               <div className="flex items-center">
                 <div className="border-2 flex items-center w-32 justify-evenly rounded-lg h-10">
-                  <Button className="bg-white h-8 text-neutral-600 hover:bg-neutral-200 active:bg-neutral-400">
+                  <Button
+                    className="bg-white h-8 text-neutral-600 hover:bg-neutral-200 active:bg-neutral-400"
+                    onClick={() => {
+                      removeCart(data[i].id, 1, data[i].price);
+                    }}
+                  >
                     -
                   </Button>
+
                   <p className="px-2">{cartItems[i].amount}</p>
-                  <Button className="bg-white h-8 text-neutral-600 hover:bg-neutral-200 active:bg-neutral-400">
+
+                  <Button
+                    className="bg-white h-8 text-neutral-600 hover:bg-neutral-200 active:bg-neutral-400"
+                    onClick={() => {
+                      addCart(data[i].id, 1, data[i].price);
+                    }}
+                  >
                     +
                   </Button>
                 </div>
@@ -153,10 +182,6 @@ const Page: FC<PageProps> = ({}) => {
 
     return matchingElements;
   };
-
-  const discount = calculateDiscount(subtotal);
-  const tax = calculateTax(discount);
-  const total = calculateTotal(tax);
 
   return (
     <>
@@ -206,20 +231,18 @@ const Page: FC<PageProps> = ({}) => {
           </div>
           <div className="flex flex-row justify-between text-neutral-400">
             <h1>Discount</h1>
-            <p>(20%) - ${discount}</p>
+            <p>(20%) - ${calculateDiscount(subtotal)}</p>
           </div>
           <div className="flex flex-row justify-between text-neutral-400">
             <h1>Tax</h1>
-            <p>+ ${tax}</p>
+            <p>+ ${calculateTax(subtotal)}</p>
           </div>
           <br />
           <hr />
           <br />
           <div className="flex flex-row justify-between">
             <h1>Total</h1>
-            <p className="font-bold">
-              ${total}
-            </p>
+            <p className="font-bold">${calculateTotal(subtotal)}</p>
           </div>
         </div>
 
@@ -227,9 +250,7 @@ const Page: FC<PageProps> = ({}) => {
 
         {/* Checkout or continue shopping */}
         <div className="flex flex-col space-y-2">
-          <Button className="bg-blue-600 hover:bg-blue-500 active:bg-neutral-600">
-            Proceed to Checkout
-          </Button>
+          <Button className="active:bg-neutral-600">Proceed to Checkout</Button>
           <Button className="bg-white hover:bg-neutral-300 active:bg-neutral-600 active:text-white text-black border-2">
             Continue Shopping
           </Button>
