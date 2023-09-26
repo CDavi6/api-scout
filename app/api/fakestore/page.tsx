@@ -153,7 +153,7 @@ const Page: FC<PageProps> = ({}) => {
             </div>
           </div>
           <div className="flex flex-col w-full h-96 justify-around bg-gray-100 dark:bg-neutral-800 rounded-2xl m-4">
-            <div className="text-center font-bold text-sm md:text-xl lg:text-2xl">
+            <div className="text-center text-xs md:text-xl lg:text-2xl">
               <h1>{items.description}</h1>
             </div>
             <div className="flex justify-center items-center">

@@ -48,7 +48,7 @@ const apiList: { name: string; href: string; description: string }[] = [
 const Navbar: FC<NavbarProps> = ({}) => {
   return (
     <>
-      <nav className="flex justify-between w-full sticky top-0 z-10 bg-white dark:bg-neutral-900 drop-shadow-xl">
+      <nav className="flex justify-between w-full sticky top-0 bg-white dark:bg-neutral-900 drop-shadow-xl z-10">
         <div className="flex flex-row lg:space-x-2 md:space-x-4 sm:space-x-8">
           <div className="w-12 h-12 sm:w-24 sm:h-24 text-center m-1 sm:m-4">
             <Image
