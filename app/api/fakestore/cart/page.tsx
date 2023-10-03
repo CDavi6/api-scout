@@ -4,12 +4,13 @@ import { FC } from "react";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from "@/mycomponents/Navbar";
+import FakeStoreNavbar from "@/mycomponents/fakestore/FakeStoreNavbar";
 import { Button } from "@/components/ui/button";
 import {
   addToCart,
   removeFromCart,
   clearCart,
-} from "../../../../src/redux/reducers/cartStuff/cartActions";
+} from "../../../../src/redux/reducers/cart/cartActions";
 import Image from "next/image";
 import { Trash2Icon } from "lucide-react";
 import Link from "next/link";
@@ -107,6 +108,18 @@ const Page: FC<PageProps> = ({}) => {
 
   //#endregion
 
+  function hasSpecificElements(elements: any, ...targetTags: any) {
+    for (const element of elements) {
+      for (const targetTag of targetTags) {
+        if (element.type === targetTag) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
   const showItems = () => {
     const dataIds = new Set(data.map((item) => item.id)); // Create a Set of data ids
     const matchingElements = [];
@@ -129,7 +142,7 @@ const Page: FC<PageProps> = ({}) => {
             matchingElements.push(
               <div className="flex flex-row my-2">
                 {/* Image */}
-                <div className="bg-neutral-100 dark:bg-neutral-700 w-20 h-20 rounded-sm flex justify-center border-2">
+                <div className="bg-neutral-100 dark:bg-neutral-700 w-20 h-20 rounded-sm flex justify-center border-2 dark:border-neutral-700">
                   <img
                     src={data[i].image}
                     alt=""
@@ -149,9 +162,9 @@ const Page: FC<PageProps> = ({}) => {
 
                 {/* Counter */}
                 <div className="flex items-center">
-                  <div className="border-2 flex items-center w-32 justify-evenly rounded-lg h-10">
+                  <div className="border-2 flex items-center w-32 justify-evenly rounded-lg h-10 dark:border-neutral-700">
                     <Button
-                      className="bg-white h-8 text-neutral-600 hover:bg-neutral-200 active:bg-neutral-400"
+                      className="bg-white dark:bg-[#121212] h-8 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 active:bg-neutral-400 dark:hover:bg-neutral-800 dark:active:bg-neutral-700"
                       onClick={() => {
                         removeCart(data[i].id, 1, data[i].price);
                       }}
@@ -162,7 +175,7 @@ const Page: FC<PageProps> = ({}) => {
                     <p className="px-2">{cartItems[i].amount}</p>
 
                     <Button
-                      className="bg-white h-8 text-neutral-600 hover:bg-neutral-200 active:bg-neutral-400"
+                      className="bg-white dark:bg-[#121212] h-8 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 active:bg-neutral-400 dark:hover:bg-neutral-800 dark:active:bg-neutral-700"
                       onClick={() => {
                         addCart(data[i].id, 1, data[i].price);
                       }}
@@ -206,6 +219,7 @@ const Page: FC<PageProps> = ({}) => {
     <>
       <title>API Scout - Cart</title>
       <Navbar />
+      <FakeStoreNavbar />
       <Button
         onClick={() => {
           dispatch(clearCart());
@@ -218,12 +232,20 @@ const Page: FC<PageProps> = ({}) => {
         <div className="w-[350px] md:w-[700px] lg:w-[900px]">
           <hr />
           <hr />
-          <div className="flex flex-col overflow-y-scroll">{showItems()}</div>
+          <div
+            className={`flex flex-col h-[300px] ${
+              hasSpecificElements(showItems(), "p")
+                ? "overflow-hidden"
+                : "overflow-y-scroll"
+            }`}
+          >
+            {showItems()}
+          </div>
           <hr />
           <br />
           {/* Promocode */}
           <div className="py-2 space-y-2">
-            <div className="flex flex-row space-x-1 border-2 p-1 rounded-lg">
+            <div className="flex flex-row space-x-1 border-2 p-1 rounded-lg dark:border-neutral-700">
               <input
                 type="text"
                 placeholder="Promocode"

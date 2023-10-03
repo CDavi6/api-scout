@@ -3,8 +3,10 @@
 import { FC } from "react";
 
 import React, { useState, useEffect } from "react";
-import { StarIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
+import { StarIcon } from "@heroicons/react/24/solid";
 import Navbar from "@/mycomponents/Navbar";
+import FakeStoreNavbar from "@/mycomponents/fakestore/FakeStoreNavbar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
@@ -14,7 +16,7 @@ import {
   addToCart,
   removeFromCart,
   clearCart,
-} from "../../../src/redux/reducers/cartStuff/cartActions";
+} from "../../../src/redux/reducers/cart/cartActions";
 
 // Define the type for the item
 type Item = {
@@ -93,9 +95,10 @@ const Page: FC<PageProps> = ({}) => {
     <>
       <title>API Scout - Fake Store</title>
       <Navbar />
-      <Link href="./fakestore/cart">Go to Cart</Link>
+      <FakeStoreNavbar />
       {data.map((items, index) => (
         <div key={index} className="flex">
+          {/* Main card */}
           <div className="bg-gray-100 dark:bg-neutral-800 m-4 rounded-2xl flex flex-col items-center text-center w-48 align-middle justify-evenly">
             <img
               src={items.image}
@@ -118,7 +121,13 @@ const Page: FC<PageProps> = ({}) => {
               <Button
                 className="flex flex-row w-36 h-8 rounded-xl hover:bg-gray-700 active:bg-gray-600"
                 onClick={() => {
-                  addCart(items.title, amounts[index], items.price, index, items.id);
+                  addCart(
+                    items.title,
+                    amounts[index],
+                    items.price,
+                    index,
+                    items.id
+                  );
                 }}
               >
                 <div>
@@ -152,12 +161,19 @@ const Page: FC<PageProps> = ({}) => {
               </button>
             </div>
           </div>
+          {/* More info section */}
           <div className="flex flex-col w-full h-96 justify-around bg-gray-100 dark:bg-neutral-800 rounded-2xl m-4">
-            <div className="text-center text-xs md:text-xl lg:text-2xl">
-              <h1>{items.description}</h1>
+            <div className="text-center text-xs md:text-xl lg:text-2xl px-2 font-bold">
+              <h1>${items.price}</h1>
+            </div>
+            <div className="text-center text-xs md:text-xl lg:text-xl px-2 dark:text-neutral-400">
+              <h1>
+                {items.description.charAt(0).toUpperCase() +
+                  items.description.slice(1)}
+              </h1>
             </div>
             <div className="flex justify-center items-center">
-              <StarIcon width={48} className="text-yellow-600" />
+              <StarIcon width={40} className="text-yellow-600" />
               &nbsp;
               <p className="font-bold text-xl">{items.rating.rate}</p>
             </div>
