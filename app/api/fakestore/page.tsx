@@ -35,12 +35,7 @@ type Item = {
 interface PageProps {}
 
 const Page: FC<PageProps> = ({}) => {
-  const dispatch = useDispatch();
-
   const [data, setData] = useState<Item[]>([]);
-  const [amounts, setAmounts] = useState<number[]>([]);
-
-  const { toast } = useToast();
 
   useEffect(() => {
     getStoreItems();
@@ -56,130 +51,56 @@ const Page: FC<PageProps> = ({}) => {
 
     const result = await response.json();
     setData(result);
-    setAmounts(new Array(result.length).fill(1));
   }
-
-  const addCart = (
-    item: string,
-    amount: number,
-    price: number,
-    index: number,
-    id: number
-  ) => {
-    dispatch(addToCart(id, amount, price));
-    console.log(id);
-
-    toast({
-      title: "Added to cart!",
-      description: `Successfully added ${amount} ${item} to cart.`,
-      action: (
-        <ToastAction altText="View Cart">
-          {" "}
-          <Link href={"/api/fakestore/cart"}>Go to cart</Link>
-        </ToastAction>
-      ),
-    });
-
-    updateAmount(index, 1);
-  };
-
-  const updateAmount = (index: number, newAmount: number) => {
-    const newAmounts = [...amounts];
-    newAmounts[index] = newAmount;
-    if (newAmount > 0) {
-      setAmounts(newAmounts);
-    }
-  };
 
   return (
     <>
       <title>API Scout - Fake Store</title>
       <Navbar />
       <FakeStoreNavbar />
-      {data.map((items, index) => (
-        <div key={index} className="flex">
-          {/* Main card */}
-          <div className="bg-gray-100 dark:bg-neutral-800 m-4 rounded-2xl flex flex-col items-center text-center w-48 align-middle justify-evenly">
-            <img
-              src={items.image}
-              width={128}
-              height={128}
-              alt="Image of product"
-              className="p-4 mix-blend-multiply"
-            />
-            <h1 className="text-black dark:text-white font-bold p-2 text-sm">
-              {items.title}
-            </h1>
-            <div>
-              {/* <li className="text-black">{items.description}</li> */}
+      <div className="bg-white dark:bg-neutral-800">
+        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+          <h2 className="sr-only">Products</h2>
 
-              <p className="text-gray-900 dark:text-gray-400 pb-4 text-8">
-                {items.category.charAt(0).toUpperCase() +
-                  items.category.slice(1)}
-              </p>
-
-              <Button
-                className="flex flex-row w-36 h-8 rounded-xl hover:bg-gray-700 active:bg-gray-600"
-                onClick={() => {
-                  addCart(
-                    items.title,
-                    amounts[index],
-                    items.price,
-                    index,
-                    items.id
-                  );
-                }}
+          <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
+            {data.map((product) => (
+              <div
+                key={product.id}
+                className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-700"
               >
-                <div>
-                  <p className="text-white font-bold pl-6 text-xs">
-                    Add to cart
-                  </p>
+                <div className="aspect-h-3 aspect-w-2 bg-gray-200 sm:aspect-none group-hover:opacity-75 sm:h-96">
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="h-full w-full object-cover object-center sm:h-full sm:w-full"
+                  />
                 </div>
-                <ChevronRightIcon
-                  width={16}
-                  className="bg-transparent rounded-lg text-white ml-auto mr-2"
-                />
-              </Button>
-            </div>
-            <div className="flex flex-row space-x-4 pt-4">
-              <Button
-                className=" bg-gray-100  dark:bg-neutral-800 text-neutral-800 dark:text-white font-bold text-2xl w-14 active:bg-gray-200 hover:bg-gray-300 dark:active:bg-neutral-600 dark:hover:bg-neutral-700"
-                onClick={() => updateAmount(index, amounts[index] - 1)}
-              >
-                -
-              </Button>
-
-              <p className="text-neutral-800 dark:text-white font-bold text-2xl">
-                {amounts[index]}
-              </p>
-
-              <button
-                className=" bg-gray-100 dark:bg-neutral-800 text-neutral-800 dark:text-white font-bold text-2xl w-14 active:bg-gray-200 hover:bg-gray-300 dark:active:bg-neutral-600 dark:hover:bg-neutral-700"
-                onClick={() => updateAmount(index, amounts[index] + 1)}
-              >
-                +
-              </button>
-            </div>
-          </div>
-          {/* More info section */}
-          <div className="flex flex-col w-full h-96 justify-around bg-gray-100 dark:bg-neutral-800 rounded-2xl m-4">
-            <div className="text-center text-xs md:text-xl lg:text-2xl px-2 font-bold">
-              <h1>${items.price}</h1>
-            </div>
-            <div className="text-center text-xs md:text-xl lg:text-xl px-2 dark:text-neutral-400">
-              <h1>
-                {items.description.charAt(0).toUpperCase() +
-                  items.description.slice(1)}
-              </h1>
-            </div>
-            <div className="flex justify-center items-center">
-              <StarIcon width={40} className="text-yellow-600" />
-              &nbsp;
-              <p className="font-bold text-xl">{items.rating.rate}</p>
-            </div>
+                <div className="flex flex-1 flex-col space-y-2 p-4">
+                  <h3 className="text-sm font-medium text-gray-900 dark:text-white">
+                    <a href={`./fakestore/products/${product.id}`}>
+                      <span aria-hidden="true" className="absolute inset-0" />
+                      {product.title}
+                    </a>
+                  </h3>
+                  <p className="text-sm text-gray-400">
+                    {product.description.charAt(0).toUpperCase() +
+                      product.description.slice(1)}
+                  </p>
+                  <div className="flex flex-1 flex-col justify-end">
+                    <p className="text-sm italic text-gray-300">
+                      {product.category.charAt(0).toUpperCase() +
+                        product.category.slice(1)}
+                    </p>
+                    <p className="text-base font-medium text-white">
+                      {product.price}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      ))}
+      </div>
     </>
   );
 };

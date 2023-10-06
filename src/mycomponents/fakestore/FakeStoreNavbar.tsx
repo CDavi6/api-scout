@@ -11,7 +11,7 @@ const FakeStoreNavbar: FC<FakeStoreNavbarProps> = ({}) => {
         <Button className="w-[100px] h-[40px] relative active:bg-neutral-400">
           <Link
             href="/api/fakestore"
-            className="absolute inset-0 w-full h-full text-white text-center flex items-center justify-center"
+            className="absolute inset-0 w-full h-full text-white dark:text-black text-center flex items-center justify-center"
           >
             Store
           </Link>
@@ -19,7 +19,7 @@ const FakeStoreNavbar: FC<FakeStoreNavbarProps> = ({}) => {
         <Button className="w-[100px] h-[40px] relative active:bg-neutral-400">
           <Link
             href="/api/fakestore/cart"
-            className="absolute inset-0 w-full h-full text-white text-center flex items-center justify-center"
+            className="absolute inset-0 w-full h-full text-white dark:text-black text-center flex items-center justify-center"
           >
             Cart
           </Link>
