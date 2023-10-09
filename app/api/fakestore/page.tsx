@@ -92,7 +92,7 @@ const Page: FC<PageProps> = ({}) => {
                         product.category.slice(1)}
                     </p>
                     <p className="text-base font-medium text-white">
-                      {product.price}
+                      ${product.price}
                     </p>
                   </div>
                 </div>

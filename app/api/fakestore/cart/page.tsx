@@ -16,6 +16,7 @@ import {
   removeFromCart,
   clearCart,
 } from "@/redux/reducers/cart/cartActions";
+import Image from "next/image";
 
 interface pageProps {}
 
@@ -119,7 +120,7 @@ const Page: FC<pageProps> = ({}) => {
                     {product.amount > 0 && (
                       <li key={product.id} className="flex py-6 sm:py-10">
                         <div className="flex-shrink-0">
-                          <img
+                          <Image
                             src={product.image}
                             alt={product.title}
                             className="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"
@@ -130,14 +131,14 @@ const Page: FC<pageProps> = ({}) => {
                           <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
                             <div>
                               <div className="flex justify-between">
-                                <h3 className="text-sm">
+                                <div className="text-sm">
                                   <a
                                     href={`products/${product.id}`}
                                     className="font-medium text-gray-700 hover:text-gray-800 dark:text-white dark:hover:text-gray-400"
                                   >
                                     {product.title}
                                   </a>
-                                </h3>
+                                </div>
                               </div>
                               <div className="flex text-sm mt-1">
                                 <p className="text-gray-500 dark:text-gray-400">
@@ -190,17 +191,17 @@ const Page: FC<pageProps> = ({}) => {
                 Order summary
               </h2>
 
-              <dl className="mt-6 space-y-4">
+              <div className="mt-6 space-y-4">
                 <div className="flex items-center justify-between">
-                  <dt className="text-sm text-gray-600 dark:text-white">
+                  <p className="text-sm text-gray-600 dark:text-white">
                     Subtotal
-                  </dt>
-                  <dd className="text-sm font-medium text-gray-900 dark:text-white">
+                  </p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
                     ${Math.round(subtotal * 100) / 100}
-                  </dd>
+                  </p>
                 </div>
                 <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                  <dt className="flex items-center text-sm text-gray-600 dark:text-white">
+                  <p className="flex items-center text-sm text-gray-600 dark:text-white">
                     <span>Shipping estimate</span>
                     <a
                       href="#"
@@ -214,13 +215,13 @@ const Page: FC<pageProps> = ({}) => {
                         aria-hidden="true"
                       />
                     </a>
-                  </dt>
-                  <dd className="text-sm font-medium text-gray-900 dark:text-white">
+                  </p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
                     $5.00
-                  </dd>
+                  </p>
                 </div>
                 <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                  <dt className="flex text-sm text-gray-600 dark:text-white">
+                  <p className="flex text-sm text-gray-600 dark:text-white">
                     <span>Tax estimate</span>
                     <a
                       href="#"
@@ -234,35 +235,33 @@ const Page: FC<pageProps> = ({}) => {
                         aria-hidden="true"
                       />
                     </a>
-                  </dt>
-                  <dd className="text-sm font-medium text-gray-900 dark:text-white">
+                  </p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
                     ${calculateTax(subtotal)}
-                  </dd>
+                  </p>
                 </div>
                 <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                  <dt className="text-base font-medium text-gray-900 dark:text-white">
+                  <p className="text-base font-medium text-gray-900 dark:text-white">
                     Order total
-                  </dt>
-                  <dd className="text-base font-medium text-gray-900 dark:text-white">
+                  </p>
+                  <p className="text-base font-medium text-gray-900 dark:text-white">
                     ${calculateTotal(subtotal, false)}
-                  </dd>
+                  </p>
                 </div>
-              </dl>
+              </div>
 
-              <div className="mt-6">
+              <div className="mt-6 flex flex-col">
                 <button
                   type="submit"
                   className="mb-2 w-full rounded-md border border-transparent bg-green-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-50 dark:focus:ring-offset-neutral-800"
                 >
                   Checkout
                 </button>
-                <Link href="/api/fakestore">
-                  <button
-                    type="button"
-                    className="w-full rounded-md border border-transparent bg-gray-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-50 dark:focus:ring-offset-neutral-800"
-                  >
-                    Continue Shopping
-                  </button>
+                <Link
+                  href="/api/fakestore"
+                  className="w-full rounded-md border border-transparent bg-gray-600 px-4 py-3 text-center font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-50 dark:focus:ring-offset-neutral-800"
+                >
+                  Continue Shopping
                 </Link>
               </div>
             </section>
