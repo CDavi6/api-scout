@@ -123,7 +123,10 @@ const Page: FC<pageProps> = ({}) => {
                           <Image
                             src={product.image}
                             alt={product.title}
-                            className="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"
+                            width={64}
+                            height={64}
+                            unoptimized
+                            className="rounded-md object-cover object-center sm:h-48 sm:w-48"
                           />
                         </div>
 
@@ -143,8 +146,8 @@ const Page: FC<pageProps> = ({}) => {
                               <div className="flex text-sm mt-1">
                                 <p className="text-gray-500 dark:text-gray-400">
                                   {`${
-                                    product.category.charAt(0).toUpperCase() +
-                                    product.category.slice(1)
+                                    product.category?.charAt(0).toUpperCase() +
+                                    product.category?.slice(1)
                                   } | Qty. ${product.amount}`}
                                 </p>
                               </div>

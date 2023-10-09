@@ -104,7 +104,7 @@ export default function Page() {
                   <div className="sm:flex-col1 mt-10 flex">
                     <button
                       type="button"
-                      className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-green-600 px-8 py-3 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
+                      className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-green-600 px-8 py-3 text-base font-medium text-white dark:text-black hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-gray-50 dark:focus:ring-offset-neutral-800 sm:w-full"
                       onClick={() => {
                         addCart(
                           data?.id ?? 0,
